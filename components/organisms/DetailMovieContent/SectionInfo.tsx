@@ -4,10 +4,11 @@ import { CreditsTypes, CrewCastTypes, DetailMovieTypes } from '../../../services
 interface SectionInfoProps {
     movie: DetailMovieTypes;
     credits: CreditsTypes;
+    direct: any;
 }
 
 export default function SectionInfo(props: SectionInfoProps) {
-  const { movie, credits } = props;
+  const { movie, credits, direct } = props;
   const year = new Date(movie.release_date);
   const rootImg = process.env.NEXT_PUBLIC_IMG;
 
@@ -15,15 +16,28 @@ export default function SectionInfo(props: SectionInfoProps) {
   const cast = credits.cast.sort();
 
   return (
+    <>
+    { direct.status ? <div className="px-4 px-sm-5 mb-4">
+      <div className="fluidMedia w-100">
+        <iframe
+            src={`https://streamtape.com/e/${direct.data.linkid}"`}
+            title={movie.title}
+            className="sixteenByNineFrame"
+            height="650"
+            frameBorder="0"
+            scrolling="no"
+            allowFullScreen
+          />
+      </div>
+    </div> : null }
     <div className="section-info px-4 px-sm-5">
-      <div className="mb-4 mb-lg-0 info-crew">
+      <div className="mt-4 mb-4 mb-lg-0 info-crew">
         {crew.map((person) => (
           <div key={person.credit_id} className="crew">
             <h5>{person.name}</h5>
             <p>{person.job}</p>
           </div>
         ))}
-        <div />
       </div>
       <div className="info-movie mb-4">
         <div>
@@ -77,5 +91,6 @@ export default function SectionInfo(props: SectionInfoProps) {
         </div>
       </div>
     </div>
+    </>
   );
 }

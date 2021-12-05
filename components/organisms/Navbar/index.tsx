@@ -24,11 +24,6 @@ export default function Navbar() {
                 <a className="nav-link">Home</a>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link href="/about-us">
-                <a className="nav-link">About Us</a>
-              </Link>
-            </li>
           </ul>
           <FormSearch />
           <div className="d-none d-lg-block">

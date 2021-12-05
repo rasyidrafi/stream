@@ -5,13 +5,14 @@ import VideoTrailer from '../../components/organisms/DetailMovieContent/VideoTra
 import Footer from '../../components/organisms/Footer';
 import Navbar from '../../components/organisms/Navbar';
 import {
-  getCredits, getDetailMovie, getSimilarMovies, getVideoTrailer,
+  getCredits, getDetailMovie, getSimilarMovies, getVideoTrailer, getMoviesUrl
 } from '../../services/data_api';
 import { DetailMovieTypes } from '../../services/data_types';
 
 interface DetailMovieProps {
   movie: DetailMovieTypes;
   similarMovies: DetailMovieTypes[];
+  direct: any;
   credits: any;
   trailer: {
     key: string;
@@ -20,7 +21,7 @@ interface DetailMovieProps {
 
 export default function DetailMovie(props: DetailMovieProps) {
   const {
-    movie, similarMovies, trailer, credits,
+    movie, similarMovies, trailer, credits, direct
   } = props;
   const rootImg = process.env.NEXT_PUBLIC_IMG;
 
@@ -35,7 +36,7 @@ export default function DetailMovie(props: DetailMovieProps) {
         </div>
         <div className="section-content">
           <SectionHeader movie={movie} />
-          <SectionInfo movie={movie} credits={credits} />
+          <SectionInfo movie={movie} credits={credits} direct={direct} />
           <SectionRecom similarMovies={similarMovies} />
         </div>
         <div className="overlay">
@@ -56,6 +57,7 @@ interface GetStaticProps {
 export async function getServerSideProps({ params }: GetStaticProps) {
   const { id } = params;
 
+  const direct = await getMoviesUrl(id)
   const movie = await getDetailMovie(id);
   const videosMovie:any = await getVideoTrailer(id);
   const trailer = videosMovie?.results?.filter((result: any) => result.type === 'Trailer')[0] || null;
@@ -67,6 +69,7 @@ export async function getServerSideProps({ params }: GetStaticProps) {
       movie,
       trailer,
       credits,
+      direct,
       similarMovies: similarMovies.results,
     },
   };
