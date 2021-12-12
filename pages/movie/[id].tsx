@@ -8,6 +8,7 @@ import {
   getCredits, getDetailMovie, getSimilarMovies, getVideoTrailer, getMoviesUrl
 } from '../../services/data_api';
 import { DetailMovieTypes } from '../../services/data_types';
+import { NextSeo } from 'next-seo';
 
 interface DetailMovieProps {
   movie: DetailMovieTypes;
@@ -27,7 +28,10 @@ export default function DetailMovie(props: DetailMovieProps) {
 
   return (
     <>
-      <div className="d-none">
+      <NextSeo
+        title={`${movie.title} (${movie.release_date.substring(0, 4)})` || "WhatMovie | Looking for information about your favorite movie"}
+      />
+      <div>
         <Navbar />
       </div>
       <div className="detail-movie mb-5">

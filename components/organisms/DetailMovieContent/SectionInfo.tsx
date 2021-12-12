@@ -20,7 +20,7 @@ export default function SectionInfo(props: SectionInfoProps) {
     { direct.status ? <div className="px-4 px-sm-5 mb-4">
       <div className="fluidMedia w-100">
         <iframe
-            src={`https://streamtape.com/e/${direct.data.linkid}/`}
+            src={`https://watchsb.com/e/${direct.data.file_code}.html`}
             title={movie.title}
             className="sixteenByNineFrame"
             height="650"

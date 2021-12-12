@@ -3,35 +3,36 @@ import * as https from 'https';
 
 const rootAPI = process.env.NEXT_PUBLIC_API;
 const keyAPI = process.env.NEXT_PUBLIC_KEY;
-const rootStream = process.env.STREAMTAPE_PUBLIC_API;
-const streamUsername = process.env.STREAMTAPE_PUBLIC_USERNAME;
-const streamPassword = process.env.STREAMTAPE_PUBLIC_PASSWORD;
-const streamFolderId = process.env.STREAMTAPE_MOVIE_FOLDER_ID;
+const rootStream = process.env.STREAMSB_PUBLIC_API;
+const streamAPI = process.env.STREAMSB_PUBLIC_KEY;
+const streamFolderId = process.env.STREAMSB_MOVIE_FOLDER_ID;
 
 interface streamMovRes {
-  name: string;
-  size: number;
+  thumbnail: string;
   link: string;
-  created_at: number;
-  downloads: number;
-  linkid: string;
-  convert: string;
+  file_code: string;
+  canplay: number;
+  length: string;
+  views: string;
+  uploaded: string;
+  public: string;
+  fld_id: string;
+  title: string;
 }
 
 interface streamResult {
   status: number;
   msg: string;
   result: {
-    folder: any[];
     files: streamMovRes[];
+    results_total: string;
+    results: number;
   };
 }
 
 export async function getMoviesUrl(idm: number) {
   const stringIdm = idm.toString();
-  let url = `${rootStream}/file/listfolder?login=${streamUsername}&key=${streamPassword}&folder=${streamFolderId}`;
-
-  console.log(url)
+  let url = `${rootStream}/file/list?key=${streamAPI}&page=1&per_page=5&fld_id=${streamFolderId}`;
 
   const responses = await axios({
     url: url,
@@ -43,10 +44,11 @@ export async function getMoviesUrl(idm: number) {
 
   const data = responses.data as streamResult;
   const files = data.result.files;
-  const filtered = files.filter((mov) => mov.name == stringIdm);
+  const filtered = files.filter((mov) => mov.title == stringIdm);
+  
   return {
     status: filtered.length == 0 ? false : true,
-    data: filtered[0],
+    data: filtered[0] ?? null,
   };
 }
 
